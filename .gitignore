@@ -1,0 +1,15 @@
+*.pyc
+
+.ipynb_checkpoints
+
+saved*
+
+data*
+
+runs*
+
+logs*
+
+optuna_studies*
+
+triple_decoding*

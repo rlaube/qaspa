@@ -1,0 +1,24 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run with argument",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "args": ["--dataset", "csqa",
+                    "--encoder", "roberta-large", "-k", "1", "-elr", "1e-5", "-dlr", "1e-3", "-bs", "64", "-mbs", "2", "--fp16", "false", "--seed", "0",
+                    "--n_epochs", "15", "--max_epochs_before_stop", "10",
+                    "--log_interval", "5",
+                    "--train_sp", "data/csqa/spa/train_graph_sp_0.npy",
+                    "--dev_sp",   "data/csqa/spa/dev_graph_sp.npy",
+                    "--test_sp",  "data/csqa/spa/test_graph_sp.npy",
+                    "--train_statements",  "data/csqa/statement/train_0.statement.jsonl",
+                    "--dev_statements", "data/csqa/statement/dev.statement.jsonl",
+                    "--test_statements", "data/csqa/statement/test.statement.jsonl",
+                    "--save_model",
+                ]
+        }
+    ]
+}
