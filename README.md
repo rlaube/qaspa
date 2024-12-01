@@ -71,13 +71,22 @@ The resulting file structure will look like:
     └── ddb/
 ```
 
-### 1. Generate graph node/relation embeddings and total graph embeddings
+### 1. Generate graph node/relation embeddings
 
+
+### 2. Generate  total graph embeddings
+Run `spa_embeddings/Graph Adjacencies.ipynb` to generate .npz files containing graph structure with entity (node/edge) indexing.
+
+Create graph vectors by `spa_embeddings/generate_graph_sps.bat`. If you would like permutations, run `spa_embeddings/Generate Perm Vector.ipynb` to generate a permutation vector to be used in the previous script.
 
 ### 2. Hyperparameter Tune QASPA
 Hyperparameter tuning is done with Optuna and experiment tracking is done with Weights & Biases (W&B). Follow the W&B quickstart to create an account and log in: https://docs.wandb.ai/quickstart/.
 
-Run 
+Define search space in `qaspa.py`. in the function ```objective(trial, args)```. Run 
+```
+tune_qaspa_{csqa,obqa,medqa}.bat
+```
+with hyperparameter_tuning=True, and a study_name defined.
 
 ### 3. Train QASPA
 As configured in these scripts, the model needs three types of input files
@@ -93,6 +102,11 @@ run_qaspa_{csqa,obqa,medqa}_seed_runs.bat
 
 
 **Note**: The models were trained and tested with HuggingFace transformers==4.37.0.
+
+### 4. Analyze Model Output
+Generate graph triple strings with `spa_embeddings/Generate Triples Strings.ipynb`.
+
+Run `output_analysis/Triple Similarity.pynb` using the saved triple strings .csv file path for the graph_triples_path variable, and the path to a saved model run (.pt file). The output of the last cell will list the top 20 most similar triples to each input and output QA graph embedding.
 
 
 ## Use your own dataset
