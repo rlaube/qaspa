@@ -53,11 +53,12 @@ def main():
     if not os.path.exists(new_directory):
         os.makedirs(new_directory)
 
+    print('Current dir:', current_directory)
     print('Output dir:', new_directory)
 
     # load graph adjacency and concept id info
     graph_file = args.split+'_graph_ids_pruned'+'.npz' if args.pruned else args.split+'_graph_ids.npz'
-    graphs = np.load(args.dataset+'/'+graph_file, allow_pickle=True)
+    graphs = np.load('../data/'+args.dataset+'/graph/'+graph_file, allow_pickle=True)
 
     # load vocab semantic pointers (embeddings) and mapping
     # with open(args.emb_dir+'cpnet_vocab_sp.pkl', 'rb') as f:

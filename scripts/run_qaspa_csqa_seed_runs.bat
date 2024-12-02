@@ -94,12 +94,12 @@ call conda activate qaspa
 
 set study_name=qaspa_l2-norm_qagnn-lr_1000s-seed-runs_%dt%
 
-set sp_dir=../SPA-Embeddings/%dataset%/bert-concept_bert-rel/l2-norm/pruned/%algebra%/
-set emb_dir=../SPA-Embeddings/cpnet/encoder_embs/bert-large-uncased_concept_emb_v2.npy
+set sp_dir=../data/%dataset%/spa/bert-concept_bert-rel/l2-norm/pruned/%algebra%/
+set emb_dir=../data/cpnet/encoder_embs/bert-large-uncased_concept_emb_v2.npy
 
 for /l %%s in (0, 1000, 4000) do (
   set run_name=qavsa_seed%%s
-  python -u qaspa.py --dataset %dataset% --encoder_only %encoder_only% ^
+  python -u ../qaspa.py --dataset %dataset% --encoder_only %encoder_only% ^
     --encoder %model% -k %k% -elr %elr% -dlr %dlr% -bs %bs% -mbs %mbs% --dropoutf %dropoutf% --dropoutspa %dropoutspa% ^
     --fp16 %fp16% --seed %%s --lr_schedule %lr_schedule% --warmup_steps %warmup_steps% --cycles %cycles% ^
     --n_epochs %n_epochs% --max_epochs_before_stop %max_epochs_before_stop% --unfreeze_epoch %unfreeze_epoch% --normalize_graphs %normalize_graphs% ^

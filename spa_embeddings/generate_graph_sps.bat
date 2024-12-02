@@ -21,7 +21,7 @@ set pruned=True
 set normalize-rel=l2
 set normalize-concept=l2
 
-set emb-dir="cpnet/"
+set emb-dir="../data/cpnet/"
 set concept-file="encoder_embs/bert-large-uncased_concept_emb.npy"
 set relation-file="encoder_embs/bert-large-uncased_rel_emb.npy"
 @REM Can also use random relation embeddings
@@ -50,7 +50,7 @@ start "%split%" cmd /c run_split_graph_sp.bat
 @REM set normalize-rel=l2
 @REM set normalize-concept=l2
 
-@REM set emb-dir="cpnet/"
+@REM set emb-dir="../data/cpnet/"
 @REM set concept-file="encoder_embs/bert-large-uncased_concept_emb.npy"
 @REM set relation-file="encoder_embs/bert-large-uncased_rel_emb.npy"
 @REM @REM Can also use random relation embeddings
@@ -79,7 +79,7 @@ start "%split%" cmd /c run_split_graph_sp.bat
 @REM set pruned=True
 @REM set normalize-rel=l2
 @REM set normalize-concept=l2
-@REM set emb-dir="umls/"
+@REM set emb-dir="../data/umls/"
 @REM set concept-file="encoder_embs/biolinkbert_umls_concept_embs.npy"
 @REM set relation-file="encoder_embs/biolinkbert_umls_relation_embs.npy"
 @REM @REM Can also use random relation embeddings

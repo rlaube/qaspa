@@ -41,7 +41,7 @@ conda install nengo nengo-spa
 conda install optuna
 ```
 
-### 1. Download data
+### 1. Download data/Preprocessing
 For question answering datasets CommonsenseQA, OpenBookQA and the ConceptNet knowledge graph, follow preprocessing described in https://github.com/michiyasunaga/qagnn.
 
 To skip preprocessing, download preprocessed CSQA and OBQA datasets and knowledge graphs by
@@ -72,7 +72,7 @@ The resulting file structure will look like:
 ```
 
 ### 1. Generate graph node/relation embeddings
-
+Run `{ConceptNet, UMLS} Entity Embeddings.ipynb`
 
 ### 2. Generate  total graph embeddings
 Run `spa_embeddings/Graph Adjacencies.ipynb` to generate .npz files containing graph structure with entity (node/edge) indexing.
@@ -99,6 +99,8 @@ To train model (for 5 seeds), run
 ```
 run_qaspa_{csqa,obqa,medqa}_seed_runs.bat
 ```
+
+with directories specified for sp_dir (for the .npy produced from `spa_embeddings/generate_graph_sps.bat`) and emb_dir (the KG embeddings from `{ConceptNet, UMLS} Entity Embeddings.ipynb`).
 
 
 **Note**: The models were trained and tested with HuggingFace transformers==4.37.0.
