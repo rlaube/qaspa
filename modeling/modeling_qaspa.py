@@ -88,9 +88,6 @@ class QASPA(nn.Module):
             module.bias.data.zero_()
             module.weight.data.fill_(1.0)
 
-    def hrr_bind(self, tensor1, tensor2):
-        return torch.fft.irfft(torch.fft.rfft(tensor1) * torch.fft.rfft(tensor2))
-
     def forward(self, sent_vecs, graph_sp, concept_ids, node_type_ids):
         """
         sent_vecs: (batch_size * num_choice, dim_sent)
@@ -112,13 +109,12 @@ class QASPA(nn.Module):
                 if self.normalize_embeddings:
                     sent_input = F.normalize(sent_input, p=2, dim=-1)
 
-                # sent_input_copy = sent_input.detach().cpu().numpy()
-                # graph_sp_copy = graph_sp.detach().cpu().numpy()
+                sent_input_copy = sent_input.detach().cpu().numpy()
+                graph_sp_copy = graph_sp.detach().cpu().numpy()
                 
                 # if self.normalize_embeddings:
                 #     for i in range(sent_input_copy.shape[0]):
                 #         sent_input_copy[i] = self.algebra.make_unitary(sent_input_copy[i])
-                #         # sent_input[i] = self.make_unitary(sent_input[i])
 
                 # if there is a permutation vector, permute the tail concept of each triple
                 if self.permute_vec is None:
@@ -129,23 +125,15 @@ class QASPA(nn.Module):
 
                         # bind the qa context to each question and answer entity with 2 unique relation embeddings
                         for q_id in q_concept_ids.tolist():
-                            # graph_sp_copy[i] += self.algebra.bind(
-                            #                             self.algebra.bind(self.concept_emb[q_id], self.qa_emb['ISQUESTIONCONCEPT']),
-                            #                             sent_input_copy[i]
-                            #                         )
-                            graph_sp[i] += self.hrr_bind(
-                                                self.hrr_bind(self.concept_emb[q_id], self.qa_emb['ISQUESTIONCONCEPT']), 
-                                                sent_input[i]
-                                            )
+                            graph_sp_copy[i] += self.algebra.bind(
+                                                        self.algebra.bind(self.concept_emb[q_id], self.qa_emb['ISQUESTIONCONCEPT']),
+                                                        sent_input_copy[i]
+                                                    )
                         for a_id in a_concept_ids.tolist():
-                            # graph_sp_copy[i] += self.algebra.bind(
-                            #                             self.algebra.bind(self.concept_emb[a_id], self.qa_emb['ISANSWERCONCEPT']),
-                            #                             sent_input_copy[i]
-                            #                         )
-                            graph_sp[i] += self.hrr_bind(
-                                                self.hrr_bind(self.concept_emb[q_id], self.qa_emb['ISANSWERCONCEPT']), 
-                                                sent_input[i]
-                                            )
+                            graph_sp_copy[i] += self.algebra.bind(
+                                                        self.algebra.bind(self.concept_emb[a_id], self.qa_emb['ISANSWERCONCEPT']),
+                                                        sent_input_copy[i]
+                                                    )
                 else:
                     # iterate through the batch
                     for i in range(graph_sp.shape[0]):
@@ -154,17 +142,17 @@ class QASPA(nn.Module):
 
                         # bind the qa context to each question and answer entity with 2 unique relation embeddings
                         for q_id in q_concept_ids.tolist():
-                             graph_sp[i] += self.hrr_bind(
-                                                        self.hrr_bind(self.concept_emb[q_id], self.qa_emb['ISQUESTIONCONCEPT']),
-                                                        sent_input[i][self.permute_vec]
+                            graph_sp_copy[i] += self.algebra.bind(
+                                                        self.algebra.bind(self.concept_emb[q_id], self.qa_emb['ISQUESTIONCONCEPT']),
+                                                        sent_input_copy[i][self.permute_vec]
                                                     )
                         for a_id in a_concept_ids.tolist():
-                            graph_sp[i] += self.hrr_bind(
-                                                        self.hrr_bind(self.concept_emb[a_id], self.qa_emb['ISANSWERCONCEPT']),
-                                                        sent_input[i][self.permute_vec]
+                            graph_sp_copy[i] += self.algebra.bind(
+                                                        self.algebra.bind(self.concept_emb[a_id], self.qa_emb['ISANSWERCONCEPT']),
+                                                        sent_input_copy[i][self.permute_vec]
                                                     )
             
-                # graph_sp = torch.from_numpy(graph_sp_copy).to(graph_sp.device)
+                graph_sp = torch.from_numpy(graph_sp_copy).to(graph_sp.device)
 
             if self.normalize_graphs:
                 graph_sp = F.normalize(graph_sp, p=2, dim=-1)
@@ -193,6 +181,8 @@ class QASPA(nn.Module):
         fft_unit = fft_val / fft_norms
         return torch.fft.irfft(fft_unit, n=len(tensor))
 
+    def hrr_bind(self, tensor1, tensor2):
+        return torch.fft.irfft(torch.fft.rfft(tensor1) * torch.fft.rfft(tensor2))
 
 class LM_QASPA(nn.Module):
     def __init__(self, model_name, encoder_only, skip_type, skip_placement, algebra, qa_context, sent_trans, k, 

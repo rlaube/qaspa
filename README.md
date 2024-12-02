@@ -72,7 +72,8 @@ The resulting file structure will look like:
 ```
 
 ### 1. Generate graph node/relation embeddings
-Run `{ConceptNet, UMLS} Entity Embeddings.ipynb`
+Run `{ConceptNet, UMLS} Entity Embeddings.ipynb`.
+Generate 2 random embeddings for IsQuestionConcept and IsAnswerConcept (same dimensionality as other embeddings.)
 
 ### 2. Generate  total graph embeddings
 Run `spa_embeddings/Graph Adjacencies.ipynb` to generate .npz files containing graph structure with entity (node/edge) indexing.

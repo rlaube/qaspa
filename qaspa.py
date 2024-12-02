@@ -151,6 +151,7 @@ def train(args,trial=None):
     ###################################################################################################
     #   Load data (concept embeddings and permutation vec)                                            #                                         
     ###################################################################################################
+    # define 2 random 1024-dimensional vectors for IsAnswerConcept and IsQuestionConcept (to bind qa context to qa graph)
     with open("data/cpnet/normalized_cpnet_vocab_sp_QA.pkl", 'rb') as f:
         qa_emb = pickle.load(f)
         
