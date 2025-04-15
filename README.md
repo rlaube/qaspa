@@ -1,6 +1,6 @@
 # QASPA: Question Answering Using Vector Symbolic Algebras
 
-This repo provides the source code & data of my paper: [QA-GNN: Reasoning with Language Models and Knowledge Graphs for Question Answering](https://arxiv.org/abs/2104.06378) (NAACL 2021).
+This repo provides the source code & data of my paper: [QAVSA: Question Answering using Vector Symbolic Algebras](https://aclanthology.org/2024.repl4nlp-1.14/) (RepL4NLP workshop at ACL 2024).
 ```bib
 @inproceedings{laube-eliasmith-2024-qavsa,
     title = "{QAVSA}: Question Answering using Vector Symbolic Algebras",
